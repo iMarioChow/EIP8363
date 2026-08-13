@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 540" width="880" height="540" role="img"><style>
+  .s{fill:var(--surface)}
+  text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  .ti{fill:var(--ink);font-size:17px;font-weight:600}
+  .sub{fill:var(--ink2);font-size:12.5px}
+  .ax{fill:var(--ink2);font-size:11.5px}
+  .axt{fill:var(--ink2);font-size:11.5px;font-weight:600}
+  .grid{stroke:var(--rule);stroke-width:1}
+  .base{stroke:var(--rule2);stroke-width:1.5}
+  .lab{font-size:12.5px;font-weight:600}
+  .note{fill:var(--ink2);font-size:11px}
+  .c1{--c:var(--s1)} .c2{--c:var(--s2)} .c3{--c:var(--s3)}
+  .ln{fill:none;stroke:var(--c);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .dsh{fill:none;stroke:var(--c);stroke-width:2;stroke-dasharray:6 4;stroke-linecap:round}
+  .dot{fill:var(--c);stroke:var(--surface);stroke-width:2}
+  .txt{fill:var(--c)}
+  .bar{fill:var(--s1)}
+  .bar2{fill:var(--s2)} .bar3{fill:var(--s3)}
+  .pt{fill:var(--c);fill-opacity:.55;stroke:none}
+  .band{fill:var(--c);fill-opacity:.14;stroke:none}
+  .fit{fill:none;stroke:var(--c);stroke-width:2.4;stroke-linecap:round}
+  .zero{stroke:var(--rule2);stroke-width:1.2;stroke-dasharray:4 4}
+  .area{fill:var(--c);fill-opacity:.22;stroke:none}
+  .box{fill:var(--surface);stroke:var(--rule2);stroke-width:1;rx:5}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+        font-size:11px;fill:var(--ink2)}
+  .monob{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+        font-size:11px;fill:var(--ink);font-weight:600}
+  :root{--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--rule:#e7e6e2;--rule2:#c9c8c2;
+        --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a}
+  @media (prefers-color-scheme:dark){:root{
+        --surface:#1a1a19;--ink:#ffffff;--ink2:#c3c2b7;--rule:#2e2e2c;--rule2:#4a4a46;
+        --s1:#3987e5;--s2:#d95926;--s3:#199e70}}
+</style><rect width="880" height="540" class="s"/><text x="84" y="26" class="ti">The yield fell the whole way down. It did not defend the price.</text><text x="84" y="45" class="sub">Consensus staking APR and ETH/BTC on a shared time axis, Jan 2023 - Jul 2026. Two panels, not two y-axes: a dual axis would imply a link the data does not support.</text><line x1="84" y1="230.1" x2="834" y2="230.1" class="grid"/><text x="74" y="234.1" class="ax" text-anchor="end">2.5%</text><line x1="84" y1="180.7" x2="834" y2="180.7" class="grid"/><text x="74" y="184.7" class="ax" text-anchor="end">3.0%</text><line x1="84" y1="131.3" x2="834" y2="131.3" class="grid"/><text x="74" y="135.3" class="ax" text-anchor="end">3.5%</text><line x1="84" y1="81.9" x2="834" y2="81.9" class="grid"/><text x="74" y="85.9" class="ax" text-anchor="end">4.0%</text><g class="c1"><path d="M84.0,83.4L101.9,95.2L119.7,101.8L137.6,99.6L155.4,125.5L173.3,139.6L191.1,149.8L209.0,157.8L226.9,163.2L244.7,167.5L262.6,171.2L280.4,172.7L298.3,175.8L316.1,184.5L334.0,187.9L351.9,189.8L369.7,190.4L387.6,192.9L405.4,196.3L423.3,197.3L441.1,198.6L459.0,199.6L476.9,198.7L494.7,196.9L512.6,196.0L530.4,195.5L548.3,197.7L566.1,197.3L584.0,198.4L601.9,202.7L619.7,205.2L637.6,206.9L655.4,204.8L673.3,209.6L691.1,206.8L709.0,206.9L726.9,220.4L744.7,221.1L762.6,222.9L780.4,226.3L798.3,226.5L816.1,227.9L834.0,229.9" class="ln"/><circle cx="84.0" cy="83.4" r="4.5" class="dot"/><circle cx="834.0" cy="229.9" r="4.5" class="dot"/><text x="94.0" y="73.4" class="lab txt">Staking APR  3.98% → 2.50%</text></g><text transform="rotate(-90 22 156.0)" x="22" y="156.0" class="axt" text-anchor="middle">Consensus staking APR (%)</text><line x1="84" y1="435.8" x2="834" y2="435.8" class="grid"/><text x="74" y="439.8" class="ax" text-anchor="end">0.030</text><line x1="84" y1="403.5" x2="834" y2="403.5" class="grid"/><text x="74" y="407.5" class="ax" text-anchor="end">0.040</text><line x1="84" y1="371.1" x2="834" y2="371.1" class="grid"/><text x="74" y="375.1" class="ax" text-anchor="end">0.050</text><line x1="84" y1="338.8" x2="834" y2="338.8" class="grid"/><text x="74" y="342.8" class="ax" text-anchor="end">0.060</text><line x1="84" y1="306.5" x2="834" y2="306.5" class="grid"/><text x="74" y="310.5" class="ax" text-anchor="end">0.070</text><g class="c2"><path d="M84.0,311.0L101.9,307.9L119.7,326.1L137.6,321.8L155.4,310.9L173.3,336.1L191.1,327.2L209.0,330.8L226.9,332.4L244.7,363.2L262.6,359.5L280.4,357.2L298.3,356.2L316.1,358.0L334.0,369.9L351.9,369.9L369.7,355.6L387.6,353.7L405.4,372.7L423.3,394.7L441.1,401.8L459.0,414.1L476.9,413.5L494.7,415.6L512.6,432.6L530.4,444.8L548.3,461.9L566.1,471.1L584.0,454.3L601.9,458.2L619.7,428.3L637.6,402.9L655.4,413.6L673.3,419.4L691.1,426.4L709.0,424.2L726.9,428.9L744.7,438.1L762.6,434.7L780.4,436.7L798.3,444.3L816.1,446.3L834.0,437.1" class="ln"/><circle cx="84.0" cy="311.0" r="4.5" class="dot"/><circle cx="834.0" cy="437.1" r="4.5" class="dot"/><text x="94.0" y="301.0" class="lab txt">ETH/BTC  0.06861 → 0.02962 (-57%)</text></g><text transform="rotate(-90 22 376.0)" x="22" y="376.0" class="axt" text-anchor="middle">ETH/BTC ratio</text><text x="84.0" y="472.0" class="ax" text-anchor="middle">2023-01</text><text x="191.1" y="472.0" class="ax" text-anchor="middle">2023-07</text><text x="298.3" y="472.0" class="ax" text-anchor="middle">2024-01</text><text x="405.4" y="472.0" class="ax" text-anchor="middle">2024-07</text><text x="512.6" y="472.0" class="ax" text-anchor="middle">2025-01</text><text x="619.7" y="472.0" class="ax" text-anchor="middle">2025-07</text><text x="726.9" y="472.0" class="ax" text-anchor="middle">2026-01</text><text x="834.0" y="472.0" class="ax" text-anchor="middle">2026-07</text><text x="459" y="496" class="axt" text-anchor="middle">Month</text><rect x="538" y="78" width="296" height="52" rx="5" class="box"/><text x="548" y="98" class="monob">corr(ΔAPR, ETH/BTC return) = -0.046</text><text x="548" y="115" class="mono">p = 0.77, n = 42 monthly changes</text><text x="84" y="514" class="note">Both series decline over the window, which is what a dual-axis chart would dramatise. In monthly changes the relationship is zero: the co-movement is</text><text x="84" y="528" class="note">shared time, not a shared cause.</text></svg>

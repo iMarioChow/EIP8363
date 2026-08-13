@@ -3,26 +3,22 @@ Does ETH's staking yield explain ETH's price?
 
 Inputs
   staked_eth_reconstructed.csv : on-chain reconstruction (see staking_history.py)
-  CoinGecko daily ETH and BTC closes, collapsed to month-end.
+  eth_monthly.csv, btc_monthly.csv : CoinGecko daily closes collapsed to month-end.
 
 The test the draft asks for -- "correlation between ETH price and staking yield" --
 is run three ways, because the naive version is a trap: the consensus-layer APR is a
 deterministic function of the staked balance (APR = 166.28 / sqrt(S)), so it is a
 near-monotone series with almost no independent variation. Correlating a monotone
 series against a mean-reverting one measures the trend, not the relationship.
+
+This file reports correlations. `regression_analysis.py` runs the same relationships
+as regressions, with standard errors, p-values, Durbin-Watson and a power calculation.
 """
-import json, csv, math, datetime as dt
-
-BASE = "/root/.claude/projects/-home-user-Best15-Strategy/ad9b36ec-64b6-57ff-8df2-08782d9de93d/tool-results/"
-ETH_JSON = BASE + "mcp-Coingecko_MCP_Pro_Preview-coingecko-1786604677675.txt"
-BTC_JSON = BASE + "mcp-Coingecko_MCP_Pro_Preview-coingecko-1786604695191.txt"
+import csv, math
 
 
-def monthly(path):
-    out = {}
-    for ts, px in json.load(open(path))["prices"]:
-        out[dt.datetime.utcfromtimestamp(ts / 1000).strftime("%Y-%m")] = px
-    return out
+def monthly(path, col):
+    return {r["month"]: float(r[col]) for r in csv.DictReader(open(path))}
 
 
 def pearson(a, b):
@@ -43,7 +39,8 @@ def spearman(a, b):
     return pearson(rank(a), rank(b))
 
 
-eth, btc = monthly(ETH_JSON), monthly(BTC_JSON)
+eth = monthly("eth_monthly.csv", "eth_usd")
+btc = monthly("btc_monthly.csv", "btc_usd")
 rows = list(csv.DictReader(open("staked_eth_reconstructed.csv")))
 data = [(r["month"], float(r["staked_eth"]), float(r["cl_apr"]), eth[r["month"]], btc[r["month"]])
         for r in rows if r["month"] in eth and r["month"] in btc]
