@@ -1,0 +1,31 @@
+sample: 2023-01 .. 2026-07  (43 months)
+staking APR range: 3.98%  ->  2.50%   (monotone decline, 34/42 months down)
+ETH price range:   $1,567 .. $4,373
+
+--- 1. levels (the naive test the draft asks for) ---
+  corr(APR, ETH price)     Pearson -0.410   Spearman -0.360
+  corr(APR, ETH/BTC)       Pearson +0.835   Spearman +0.824
+  -> both are trend artefacts. APR fell in a near-straight line while ETH round-tripped.
+
+--- 2. monthly changes (removes the trend) ---
+  corr(dAPR, ETH return)   Pearson -0.055   Spearman -0.154
+  corr(dAPR, ETH/BTC ret)  Pearson -0.046   Spearman -0.134
+
+--- 3. the reverse causality check: does price drive staking, or staking drive yield? ---
+  corr(ETH return, staked growth, same month) +0.059
+  corr(ETH return t, staked growth t+1)       +0.038
+  corr(staked growth t, ETH return t+1)       -0.066
+
+--- 4. yield vs ETH/BTC, the question that actually matters ---
+     month  CL APR   ETH/BTC     ETH $
+   2023-01   3.98%   0.06861     1,567
+   2023-07   3.31%   0.06358     1,862
+   2024-01   3.05%   0.05463     2,346
+   2024-07   2.84%   0.04952     3,278
+   2025-01   2.85%   0.03100     3,246
+   2025-07   2.75%   0.03231     3,807
+   2026-01   2.60%   0.03214     2,703
+   2026-07   2.50%   0.02962     1,919
+
+  ETH/BTC 2023-01: 0.06861   2026-07: 0.02962   change -56.8%
+  staking APR over the same window: 3.98% -> 2.50%
