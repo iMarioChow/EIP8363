@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 470" width="880" height="470" role="img"><style>
+  .s{fill:var(--surface)}
+  text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  .ti{fill:var(--ink);font-size:17px;font-weight:600}
+  .sub{fill:var(--ink2);font-size:12.5px}
+  .ax{fill:var(--ink2);font-size:11.5px}
+  .axt{fill:var(--ink2);font-size:11.5px;font-weight:600}
+  .grid{stroke:var(--rule);stroke-width:1}
+  .base{stroke:var(--rule2);stroke-width:1.5}
+  .lab{font-size:12.5px;font-weight:600}
+  .note{fill:var(--ink2);font-size:11px}
+  .c1{--c:var(--s1)} .c2{--c:var(--s2)} .c3{--c:var(--s3)}
+  .ln{fill:none;stroke:var(--c);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .dsh{fill:none;stroke:var(--c);stroke-width:2;stroke-dasharray:6 4;stroke-linecap:round}
+  .dot{fill:var(--c);stroke:var(--surface);stroke-width:2}
+  .txt{fill:var(--c)}
+  .bar{fill:var(--s1)}
+  .bar2{fill:var(--s2)} .bar3{fill:var(--s3)}
+  .pt{fill:var(--c);fill-opacity:.55;stroke:none}
+  .band{fill:var(--c);fill-opacity:.14;stroke:none}
+  .fit{fill:none;stroke:var(--c);stroke-width:2.4;stroke-linecap:round}
+  .zero{stroke:var(--rule2);stroke-width:1.2;stroke-dasharray:4 4}
+  .area{fill:var(--c);fill-opacity:.22;stroke:none}
+  .box{fill:var(--surface);stroke:var(--rule2);stroke-width:1;rx:5}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+        font-size:11px;fill:var(--ink2)}
+  .monob{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+        font-size:11px;fill:var(--ink);font-weight:600}
+  :root{--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--rule:#e7e6e2;--rule2:#c9c8c2;
+        --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a}
+  @media (prefers-color-scheme:dark){:root{
+        --surface:#1a1a19;--ink:#ffffff;--ink2:#c3c2b7;--rule:#2e2e2c;--rule2:#4a4a46;
+        --s1:#3987e5;--s2:#d95926;--s3:#199e70}}
+</style><rect width="880" height="470" class="s"/><text x="84" y="26" class="ti">Staking grew through every price regime</text><text x="84" y="45" class="sub">ETH staked, reconstructed month by month from deposit and exit flows. The right axis reads the same series as a share of today's 120.7M supply.</text><line x1="84" y1="404.0" x2="850" y2="404.0" class="grid"/><text x="74" y="408.0" class="ax" text-anchor="end">0M</text><text x="860" y="408.0" class="ax" text-anchor="start">0%</text><line x1="84" y1="334.8" x2="850" y2="334.8" class="grid"/><text x="74" y="338.8" class="ax" text-anchor="end">10M</text><text x="860" y="338.8" class="ax" text-anchor="start">8%</text><line x1="84" y1="265.6" x2="850" y2="265.6" class="grid"/><text x="74" y="269.6" class="ax" text-anchor="end">20M</text><text x="860" y="269.6" class="ax" text-anchor="start">17%</text><line x1="84" y1="196.4" x2="850" y2="196.4" class="grid"/><text x="74" y="200.4" class="ax" text-anchor="end">30M</text><text x="860" y="200.4" class="ax" text-anchor="start">25%</text><line x1="84" y1="127.2" x2="850" y2="127.2" class="grid"/><text x="74" y="131.2" class="ax" text-anchor="end">40M</text><text x="860" y="131.2" class="ax" text-anchor="start">33%</text><line x1="84" y1="58.0" x2="850" y2="58.0" class="grid"/><text x="74" y="62.0" class="ax" text-anchor="end">50M</text><text x="860" y="62.0" class="ax" text-anchor="start">41%</text><text x="84.0" y="424.0" class="ax" text-anchor="middle">2020-11</text><text x="151.6" y="424.0" class="ax" text-anchor="middle">2021-05</text><text x="219.2" y="424.0" class="ax" text-anchor="middle">2021-11</text><text x="286.8" y="424.0" class="ax" text-anchor="middle">2022-05</text><text x="354.4" y="424.0" class="ax" text-anchor="middle">2022-11</text><text x="421.9" y="424.0" class="ax" text-anchor="middle">2023-05</text><text x="489.5" y="424.0" class="ax" text-anchor="middle">2023-11</text><text x="557.1" y="424.0" class="ax" text-anchor="middle">2024-05</text><text x="624.7" y="424.0" class="ax" text-anchor="middle">2024-11</text><text x="692.3" y="424.0" class="ax" text-anchor="middle">2025-05</text><text x="759.9" y="424.0" class="ax" text-anchor="middle">2025-11</text><text x="850.0" y="424.0" class="ax" text-anchor="middle">2026-07</text><g class="c1"><path d="M84.0,404.0L84.0,398.0L95.3,388.9L106.5,383.8L117.8,380.6L129.1,378.4L140.3,375.0L151.6,367.0L162.9,361.3L174.1,357.8L185.4,352.0L196.6,348.0L207.9,345.8L219.2,343.0L230.4,340.1L241.7,336.8L253.0,333.8L264.2,324.3L275.5,316.5L286.8,311.5L298.0,309.5L309.3,307.7L320.6,305.8L331.8,300.8L343.1,296.3L354.4,290.6L365.6,287.4L376.9,283.4L388.1,275.9L399.4,271.3L410.7,272.9L421.9,252.8L433.2,239.9L444.5,229.6L455.7,220.7L467.0,214.4L478.3,209.0L489.5,204.3L500.8,202.3L512.1,198.1L523.3,185.8L534.6,180.5L545.9,177.6L557.1,176.6L568.4,172.6L579.6,167.1L590.9,165.3L602.2,163.1L613.4,161.3L624.7,163.0L636.0,166.1L647.2,167.5L658.5,168.4L669.8,164.7L681.0,165.2L692.3,163.4L703.6,155.8L714.8,151.3L726.1,148.0L737.4,152.0L748.6,142.9L759.9,148.3L771.1,148.0L782.4,120.4L793.7,118.8L804.9,114.8L816.2,106.8L827.5,106.5L838.7,103.0L850.0,98.3L850.0,404.0Z" class="area"/><path d="M84.0,398.0L95.3,388.9L106.5,383.8L117.8,380.6L129.1,378.4L140.3,375.0L151.6,367.0L162.9,361.3L174.1,357.8L185.4,352.0L196.6,348.0L207.9,345.8L219.2,343.0L230.4,340.1L241.7,336.8L253.0,333.8L264.2,324.3L275.5,316.5L286.8,311.5L298.0,309.5L309.3,307.7L320.6,305.8L331.8,300.8L343.1,296.3L354.4,290.6L365.6,287.4L376.9,283.4L388.1,275.9L399.4,271.3L410.7,272.9L421.9,252.8L433.2,239.9L444.5,229.6L455.7,220.7L467.0,214.4L478.3,209.0L489.5,204.3L500.8,202.3L512.1,198.1L523.3,185.8L534.6,180.5L545.9,177.6L557.1,176.6L568.4,172.6L579.6,167.1L590.9,165.3L602.2,163.1L613.4,161.3L624.7,163.0L636.0,166.1L647.2,167.5L658.5,168.4L669.8,164.7L681.0,165.2L692.3,163.4L703.6,155.8L714.8,151.3L726.1,148.0L737.4,152.0L748.6,142.9L759.9,148.3L771.1,148.0L782.4,120.4L793.7,118.8L804.9,114.8L816.2,106.8L827.5,106.5L838.7,103.0L850.0,98.3" class="ln"/></g><line x1="331.8" y1="58" x2="331.8" y2="404" class="grid" stroke-dasharray="3 4"/><text x="336.8" y="70" class="note">Merge</text><line x1="410.7" y1="58" x2="410.7" y2="404" class="grid" stroke-dasharray="3 4"/><text x="415.7" y="70" class="note">Shapella (exits enabled)</text><g class="c1"><circle cx="850.0" cy="98.3" r="5" class="dot"/><text x="850.0" y="84.3" class="lab txt" text-anchor="end">44.2M staked (36.6%)</text></g><text x="467" y="448" class="axt" text-anchor="middle">Month</text><text transform="rotate(-90 20 231.0)" x="20" y="231.0" class="axt" text-anchor="middle">ETH staked (millions)</text><text transform="rotate(-90 868 231.0)" x="868" y="231.0" class="axt" text-anchor="middle">Share of supply (%)</text><text x="84" y="464" class="note">Reconstruction lands ~5.4% above the reported 41.9M record: it counts the activation queue and does not net out inactive balances. Shape and direction</text><text x="84" y="478" class="note">are reliable, the level is not exact.</text></svg>

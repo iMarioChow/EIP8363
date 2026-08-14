@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 410" width="880" height="410" role="img"><style>
+  .s{fill:var(--surface)}
+  text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  .ti{fill:var(--ink);font-size:17px;font-weight:600}
+  .sub{fill:var(--ink2);font-size:12.5px}
+  .ax{fill:var(--ink2);font-size:11.5px}
+  .axt{fill:var(--ink2);font-size:11.5px;font-weight:600}
+  .grid{stroke:var(--rule);stroke-width:1}
+  .base{stroke:var(--rule2);stroke-width:1.5}
+  .lab{font-size:12.5px;font-weight:600}
+  .note{fill:var(--ink2);font-size:11px}
+  .c1{--c:var(--s1)} .c2{--c:var(--s2)} .c3{--c:var(--s3)}
+  .ln{fill:none;stroke:var(--c);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .dsh{fill:none;stroke:var(--c);stroke-width:2;stroke-dasharray:6 4;stroke-linecap:round}
+  .dot{fill:var(--c);stroke:var(--surface);stroke-width:2}
+  .txt{fill:var(--c)}
+  .bar{fill:var(--s1)}
+  .bar2{fill:var(--s2)} .bar3{fill:var(--s3)}
+  .pt{fill:var(--c);fill-opacity:.55;stroke:none}
+  .band{fill:var(--c);fill-opacity:.14;stroke:none}
+  .fit{fill:none;stroke:var(--c);stroke-width:2.4;stroke-linecap:round}
+  .zero{stroke:var(--rule2);stroke-width:1.2;stroke-dasharray:4 4}
+  .area{fill:var(--c);fill-opacity:.22;stroke:none}
+  .box{fill:var(--surface);stroke:var(--rule2);stroke-width:1;rx:5}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+        font-size:11px;fill:var(--ink2)}
+  .monob{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+        font-size:11px;fill:var(--ink);font-weight:600}
+  :root{--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--rule:#e7e6e2;--rule2:#c9c8c2;
+        --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a}
+  @media (prefers-color-scheme:dark){:root{
+        --surface:#1a1a19;--ink:#ffffff;--ink2:#c3c2b7;--rule:#2e2e2c;--rule2:#4a4a46;
+        --s1:#3987e5;--s2:#d95926;--s3:#199e70}}
+</style><rect width="880" height="410" class="s"/><text x="84" y="26" class="ti">Every price-and-yield channel tested, and every one of them is zero</text><text x="84" y="45" class="sub">Standardised OLS slopes with 95% confidence intervals. Units are standard deviations of the outcome per standard deviation of the driver,</text><text x="84" y="63" class="sub">so the five tests are directly comparable. An interval that crosses the dashed zero line cannot reject "no effect". All five cross it.</text><line x1="292.3" y1="100" x2="292.3" y2="308" class="grid"/><text x="292.3" y="328.0" class="ax" text-anchor="middle">-0.50</text><line x1="413.6" y1="100" x2="413.6" y2="308" class="grid"/><text x="413.6" y="328.0" class="ax" text-anchor="middle">-0.25</text><line x1="535.0" y1="100" x2="535.0" y2="308" class="zero"/><text x="535.0" y="328.0" class="ax" text-anchor="middle">+0.00</text><line x1="656.4" y1="100" x2="656.4" y2="308" class="grid"/><text x="656.4" y="328.0" class="ax" text-anchor="middle">+0.25</text><line x1="777.7" y1="100" x2="777.7" y2="308" class="grid"/><text x="777.7" y="328.0" class="ax" text-anchor="middle">+0.50</text><text x="254" y="131.2" class="ax" text-anchor="end">ΔAPR → ETH return</text><g class="c1"><line x1="353.6" y1="127.2" x2="663.4" y2="127.2" stroke="var(--c)" stroke-width="2.4" stroke-linecap="round" opacity=".55"/><line x1="353.6" y1="121.2" x2="353.6" y2="133.2" stroke="var(--c)" stroke-width="2"/><line x1="663.4" y1="121.2" x2="663.4" y2="133.2" stroke="var(--c)" stroke-width="2"/><circle cx="508.5" cy="127.2" r="5" class="dot"/></g><text x="812" y="131.2" class="mono">p=0.73</text><text x="254" y="169.6" class="ax" text-anchor="end">ΔAPR → ETH/BTC return</text><g class="c1"><line x1="357.5" y1="165.6" x2="667.5" y2="165.6" stroke="var(--c)" stroke-width="2.4" stroke-linecap="round" opacity=".55"/><line x1="357.5" y1="159.6" x2="357.5" y2="171.6" stroke="var(--c)" stroke-width="2"/><line x1="667.5" y1="159.6" x2="667.5" y2="171.6" stroke="var(--c)" stroke-width="2"/><circle cx="512.5" cy="165.6" r="5" class="dot"/></g><text x="812" y="169.6" class="mono">p=0.77</text><text x="254" y="208.0" class="ax" text-anchor="end">ETH return → staked growth (same month)</text><g class="c1"><line x1="408.8" y1="204.0" x2="718.5" y2="204.0" stroke="var(--c)" stroke-width="2.4" stroke-linecap="round" opacity=".55"/><line x1="408.8" y1="198.0" x2="408.8" y2="210.0" stroke="var(--c)" stroke-width="2"/><line x1="718.5" y1="198.0" x2="718.5" y2="210.0" stroke="var(--c)" stroke-width="2"/><circle cx="563.6" cy="204.0" r="5" class="dot"/></g><text x="812" y="208.0" class="mono">p=0.71</text><text x="254" y="246.4" class="ax" text-anchor="end">ETH return t → staked growth t+1</text><g class="c1"><line x1="396.5" y1="242.4" x2="710.8" y2="242.4" stroke="var(--c)" stroke-width="2.4" stroke-linecap="round" opacity=".55"/><line x1="396.5" y1="236.4" x2="396.5" y2="248.4" stroke="var(--c)" stroke-width="2"/><line x1="710.8" y1="236.4" x2="710.8" y2="248.4" stroke="var(--c)" stroke-width="2"/><circle cx="553.7" cy="242.4" r="5" class="dot"/></g><text x="812" y="246.4" class="mono">p=0.81</text><text x="254" y="284.8" class="ax" text-anchor="end">staked growth t → ETH return t+1</text><g class="c1"><line x1="346.2" y1="280.8" x2="659.9" y2="280.8" stroke="var(--c)" stroke-width="2.4" stroke-linecap="round" opacity=".55"/><line x1="346.2" y1="274.8" x2="346.2" y2="286.8" stroke="var(--c)" stroke-width="2"/><line x1="659.9" y1="274.8" x2="659.9" y2="286.8" stroke="var(--c)" stroke-width="2"/><circle cx="503.1" cy="280.8" r="5" class="dot"/></g><text x="812" y="284.8" class="mono">p=0.68</text><text x="535" y="352" class="axt" text-anchor="middle">Standardised slope (sd of outcome per sd of driver)</text><text x="84" y="376" class="note">Reading: the widest interval spans -0.39 to +0.38 standard deviations. Monthly data cannot rule out a small yield effect; what it rules out is a large</text><text x="84" y="390" class="note">one, which is the claim EIP-8363's opponents are making. n = 42 monthly changes (41 for the lead and lag tests), Jan 2023 - Jul 2026.</text></svg>

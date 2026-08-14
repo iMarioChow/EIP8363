@@ -8,8 +8,9 @@ Data pulled 13 Aug 2026. Sources and reproduction steps in [§10](#10-how-to-ver
 
 **Fastest read:** [§0](#0-the-one-thing-that-changes-the-whole-article) (the burn is
 dead), [§3c](#3c-equilibrium--the-number-that-actually-settles-the-argument) (the
-mechanism is self-limiting), [§7](#7-where-momirs-framework-is-questionable) (what to
-fix before publishing).
+mechanism is self-limiting), [§4](#4-todo-1--correlation-between-eth-price-and-staking-yield)
+(yield does not move price, with the regressions to back it),
+[§7](#7-where-momirs-framework-is-questionable) (what to fix before publishing).
 
 ---
 
@@ -29,6 +30,8 @@ lower still (1,133 ETH in July 2026, ~13.7k/yr annualised).
 | 2024 | 634,265 | 1,733 |
 | 2025 | 91,175 | 250 |
 | 2026 YTD (to 31 Jul) | 12,638 | 60 |
+
+![Consensus-layer issuance against EIP-1559 burn per calendar year, post-Merge. The burn exceeded issuance in 2023 and the gap has widened every year since, reaching +1,049k ETH in 2025](charts/issuance-vs-burn.svg)
 
 Against gross issuance of ~1.08M ETH/yr, the burn now offsets **2.6%** of new supply.
 "Ultrasound money" is over as a mechanism. L2 migration and blob scaling moved the fee
@@ -113,6 +116,19 @@ ETH in Jul-2026).
 **Validator income is now ~92.5% issuance and ~7.5% fees.** That ratio is the crux of
 the whole debate and it is not in the draft.
 
+![Staking APR split into consensus-layer issuance and execution-layer income from Aug 2024 to Jul 2026. The consensus band is flat near 2.7% while the execution band thins from 0.9pp to 0.2pp](charts/staking-apr-split.svg)
+
+The execution-layer band is what survives EIP-8363 untouched, and it is thin and getting
+thinner. Anyone arguing that fee income will cushion the issuance cut has to explain that
+trend line.
+
+![ETH staked reconstructed month by month from Nov 2020 to Jul 2026, rising through the Merge and Shapella to 44.2M with no visible reversal in any drawdown](charts/staked-eth-history.svg)
+
+Staking has grown through the 2022 bear market, through Shapella enabling exits, and
+through the 2026 drawdown. It has never once contracted for more than two consecutive
+months. Whatever is driving the staking bid, it is not visibly the yield — which is the
+question [§4](#4-todo-1--correlation-between-eth-price-and-staking-yield) takes up.
+
 ---
 
 ## 3. Modelling EIP-8363 (`issuance_model.py`)
@@ -175,7 +191,52 @@ the genuinely interesting design point and it is currently missing.
 
 ## 4. `[TODO]` #1 — correlation between ETH price and staking yield
 
-**Answer: there isn't one.** (`yield_price_analysis.py`, 43 months, Jan-2023 → Jul-2026.)
+**Answer: there isn't one.** (`yield_price_analysis.py` for the correlations,
+`regression_analysis.py` for the regressions; 43 months, Jan-2023 → Jul-2026.)
+
+### 4a. First, the question underneath the question: is stake rate correlated with yield?
+
+Yes — perfectly, and not statistically. It is an identity, so it is worth getting out of
+the way before anything else, because it is the reason the price test has to be built the
+way it is.
+
+Ethereum pays gross consensus-layer issuance
+
+```
+I(S) = 940.9 · √(S / 32)  =  166.28 · √S        ETH per year
+```
+
+on a total staked balance `S`. The yield per staked ETH is therefore
+
+```
+APR(S) = I(S) / S = 166.28 / √S                 →   log APR = log(166.28) − 0.5 · log S
+```
+
+![Consensus staking APR against ETH staked. All 43 observed months from Jan 2023 to Jul 2026 sit exactly on the theoretical curve APR equals 166.28 divided by the square root of the staked balance](charts/stake-rate-vs-yield.svg)
+
+Regressing `log(APR)` on `log(staked)` over the 43 months returns a slope of **−0.5000**
+against a theoretical −0.5, an intercept of 5.1139 against `log(166.28)` = 5.1140, and
+**R² = 1.0000**. That is not a finding; it is a unit test confirming the reconstruction is
+sound. The economics of it:
+
+- **The elasticity is −0.5.** A 1% increase in the staked balance cuts the yield by 0.5%.
+- **Doubling the stake cuts the yield 29.3%. Quadrupling it halves the yield.**
+- The relationship is *sublinear by design*. Ethereum deliberately chose `√S` so that the
+  marginal cost of security falls as the stake grows — each additional staker is paid
+  less than the last. EIP-8363 is an argument about whether that taper is steep enough,
+  not about whether it exists.
+
+Two consequences for everything below:
+
+1. **"Stake rate" and "staking yield" are the same variable.** Any regression that puts
+   both on the right-hand side is collinear to machine precision. Any chart that plots
+   them against each other is plotting a hyperbola, not a discovery.
+2. **The APR series carries almost no independent variation.** It fell in 34 of 42 months
+   in a near-straight line. Correlating a monotone series against a round-tripping price
+   measures the shared trend and nothing else — which is exactly the trap the naive
+   version of this TODO walks into.
+
+### 4b. The correlation tests
 
 | Test | Pearson | Spearman |
 |---|---|---|
@@ -186,27 +247,72 @@ the genuinely interesting design point and it is currently missing.
 | ETH return(t) → staked growth(t+1) | +0.038 | |
 | staked growth(t) → ETH return(t+1) | −0.066 | |
 
-Do **not** publish the level correlations. Consensus APR is a deterministic function of
-the staked balance (`APR = 166.28/√S`), so it is a near-monotone series — it fell in 34
-of 42 months, from 3.98% to 2.50%. Correlating that with a round-tripping price measures
-the trend and nothing else. The +0.835 against ETH/BTC would let someone argue "falling
-yield caused ETH/BTC to fall", which is exactly the kind of spurious result that gets a
-research piece torn apart.
+### 4c. The regressions, with the diagnostic that settles it
 
-In changes, the relationship is **statistically indistinguishable from zero in both
-directions**. Yield changes do not move price; price changes do not move staking flows.
+![Two scatter panels. On levels, ETH/BTC against staking APR fits an R-squared of 0.70 with a Durbin-Watson of 0.27, flagged as spurious. In monthly changes, ETH return against the change in APR is a flat line with R-squared 0.003 and p equal to 0.73](charts/yield-price-regression.svg)
 
-The usable version of this for the article, which supports the author's thesis:
+| Regression | Slope | 95% CI | R² | p | Durbin-Watson |
+|---|---|---|---|---|---|
+| Levels: ETH price ~ APR | −$871 per 1pp | [−1,482, −260] | 0.168 | 0.006 | **0.40** |
+| Levels: ETH/BTC ~ APR | +0.0335 per 1pp | [+0.0265, +0.0404] | 0.697 | <0.001 | **0.27** |
+| **Changes: ETH return ~ ΔAPR** | **−0.18pp per bp** | **[−1.23, +0.87]** | **0.003** | **0.73** | 1.75 |
+| **Changes: ETH/BTC return ~ ΔAPR** | **−0.10pp per bp** | **[−0.76, +0.57]** | **0.002** | **0.77** | 1.65 |
+| ETH return(t) → staked growth(t+1) | +0.007pp per pp | [−0.053, +0.067] | 0.002 | 0.81 | 1.59 |
+| staked growth(t) → ETH return(t+1) | −0.35pp per pp | [−2.08, +1.38] | 0.004 | 0.68 | 1.73 |
+
+Standard errors are OLS; Newey-West HAC errors (Bartlett, 3 lags) are in
+`regression_output.txt` and change no conclusion.
+
+**Do not publish the level regressions.** The Durbin-Watson statistics of 0.40 and 0.27
+are the tell: residuals that autocorrelated mean the regression has fitted a shared
+downtrend, which is the textbook signature of a spurious regression. The +0.835 on
+ETH/BTC would let someone argue "falling yield caused ETH/BTC to fall" — exactly the kind
+of result that gets a research piece torn apart, and exactly what §4a predicts you get
+when you regress against a near-deterministic monotone series.
+
+In changes, the relationship is **statistically indistinguishable from zero in every
+direction tested**.
+
+![Coefficient plot of five standardised regression slopes with 95% confidence intervals. All five intervals cross zero, with p-values from 0.68 to 0.81](charts/regression-coefficients.svg)
+
+### 4d. Could the test have found an effect if one were there?
+
+This is the question that makes the null result usable rather than merely convenient.
+
+- Residual σ of ETH's monthly return: **18.1pp**. σ of ΔAPR: **5.4bp**.
+- Smallest slope detectable at 5% significance and 80% power: **1.46pp per bp** — eight
+  times the estimated slope.
+- Over the sample APR fell 148bp. Applied linearly, a threshold-sized effect would have
+  moved ETH **216pp** cumulatively; the point estimate implies 27pp, and the 95% interval
+  spans −129pp to +183pp.
+
+**Honest reading: monthly data cannot rule out a small yield effect. What it rules out is
+a large one** — and a large one is precisely what EIP-8363's opponents are claiming. The
+strongest defensible sentence is the conditional, not the absolute.
+
+### 4e. The version to publish
+
+![Two stacked panels sharing a time axis: consensus staking APR falling from 3.98 to 2.50 percent, and ETH/BTC falling 57 percent over the same window, with the change-correlation of minus 0.046 stated on the chart](charts/yield-vs-price-panels.svg)
 
 > Between January 2023 and July 2026, ETH's staking yield fell from 3.98% to 2.50% and
 > ETH/BTC fell 57%. Over the same window, the month-to-month correlation between changes
-> in staking yield and ETH's return was −0.05. The yield was there the whole way down.
-> It did not defend the price, and its compression did not cause the decline. If a
-> 37% cut in yield delivered by the existing reward curve had no detectable price
-> effect, the burden of proof is on anyone claiming a further cut will.
+> in staking yield and ETH's return was −0.05, with a 95% confidence interval that
+> comfortably contains zero. The yield was there the whole way down. It did not defend
+> the price, and its compression did not cause the decline. If a 37% cut in yield
+> delivered by the existing reward curve had no detectable price effect, the burden of
+> proof is on anyone claiming a further cut will.
 
-Caveat to state: the staking series is reconstructed from on-chain flows (§8) and lands
-5.4% above the reported 41.9M; direction and shape are reliable, the level is not exact.
+Caveats to state:
+
+- The staking series is reconstructed from on-chain flows ([§10](#10-how-to-verify)) and
+  lands 5.4% above the reported 41.9M; direction and shape are reliable, the level is not
+  exact. Because APR is a deterministic function of the level, a 5.4% overstatement of
+  `S` understates APR by ~2.7% uniformly — it shifts the series, it does not change any
+  correlation or slope.
+- 43 monthly observations is a small sample. The null is a failure to reject, not a proof
+  of no effect; §4d is what makes it worth stating anyway.
+- Monthly frequency will miss an effect that decays inside a month. Daily staking-flow
+  data would tighten this and is the one gap worth closing if the claim becomes central.
 
 ---
 
@@ -222,6 +328,8 @@ Caveat to state: the staking series is reconstructed from on-chain flows (§8) a
 | Rocket Pool | $1.00B | 1.3% |
 | Coinbase cbETH | $0.35B | 0.4% |
 | **Top 5** | **$29.6B** | **37.3%** |
+
+![Share of all staked ETH by custody route. Lido holds 22.6 percent, Binance 8.9, ether.fi 4.2, Rocket Pool 1.3 and Coinbase 0.4, with the remaining 62.7 percent in solo, exchange and institutional custody](charts/lst-share.svg)
 
 Lido alone is **43% of Ethereum's entire $41.3B DeFi TVL**. Any claim that "DeFi will be
 fine" has to survive that number.
@@ -240,6 +348,8 @@ EigenLayer: **$5.05B** (DefiLlama) vs **$2.87B** (Surf) — see the data-conflic
 | Morpho Blue | $7.97B | $0.56B | $0.25B | 10.1% |
 | Compound V3 | — | $0.21B | — | — |
 | Fluid Lending | — | $0.15B | — | — |
+
+![Stacked bars of wstETH and weETH as a share of each lending market's TVL: SparkLend 68.6 percent, Aave V3 35.0 percent, Morpho Blue 10.2 percent](charts/lst-collateral.svg)
 
 Across the three largest Ethereum lending markets, **~$8.2B of ~$25.7B (32%) of
 collateral is a staking-yield derivative.** SparkLend is a single-point-of-failure case:
@@ -453,27 +563,41 @@ scaffolding, not the thesis.
 
 ## 8. Chart list
 
-| # | Chart | Data |
-|---|---|---|
-| 1 | Monthly ETH burn, Aug-2021 → Jul-2026, log scale — *the 98% collapse* | `eth_supply_monthly.csv`, `burn_history.csv` |
-| 2 | Gross issuance vs burn vs net issuance, annual | §2 + `burn_history.csv` |
-| 3 | Staked ETH and staking ratio, 2021 → 2026 | `staked_eth_reconstructed.csv` |
-| 4 | Staking APR: consensus vs execution layer, stacked | §2, `eth_supply_monthly.csv` |
-| 5 | **Yield curve under EIP-8363 vs status quo, x = staked ETH** — the money chart | §3b |
-| 6 | **Equilibrium staking ratio vs required return** | §3c |
-| 7 | LST share of staked ETH (Lido dominance over time) | §5a |
-| 8 | LST collateral as % of TVL, by lending protocol | §5c |
-| 9 | ETH/BTC and staking APR, **two stacked panels sharing an x-axis**, with the Δ-correlation stated on the chart | §4 |
+All twelve are built. `python3 make_charts.py` regenerates every SVG in `charts/` from
+the checked-in CSVs; each is theme-aware, direct-labelled, and carries a named title and
+unit on both axes.
 
-Three are built and embedded above (`charts/*.svg`, regenerate with `make_charts.py`):
-the burn collapse (§0), the issuance curves (§3a) and the equilibrium curve (§3c). The
-equilibrium chart is the one nobody else in this debate has published — lead with it.
+| # | Chart | File | Section | Data |
+|---|---|---|---|---|
+| 1 | EIP-1559 burn per day by year — *the 98% collapse* | `burn-collapse.svg` | §0 | `burn_history.csv` |
+| 2 | Issuance vs burn vs net, by calendar year | `issuance-vs-burn.svg` | §0 | `burn_history.csv`, `staked_eth_reconstructed.csv` |
+| 3 | Staked ETH and staking ratio, 2020 → 2026 | `staked-eth-history.svg` | §2 | `staked_eth_reconstructed.csv` |
+| 4 | Staking APR: consensus vs execution layer | `staking-apr-split.svg` | §2 | `eth_supply_monthly.csv` |
+| 5 | **Issuance curves, status quo vs EIP-8363** — the money chart | `issuance-curves.svg` | §3a | `issuance_model.py` |
+| 6 | **Equilibrium staking ratio vs required return** | `staking-equilibrium.svg` | §3c | `issuance_model.py` |
+| 7 | **Stake rate vs staking yield — the `166.28/√S` identity** | `stake-rate-vs-yield.svg` | §4a | `staked_eth_reconstructed.csv` |
+| 8 | **Levels vs changes regression scatter, with 95% CI bands** | `yield-price-regression.svg` | §4c | `regression_analysis.py` |
+| 9 | **Coefficient plot: five tested channels, all zero** | `regression-coefficients.svg` | §4c | `regression_analysis.py` |
+| 10 | **ETH/BTC and staking APR, two panels on a shared x-axis** | `yield-vs-price-panels.svg` | §4e | `eth_monthly.csv`, `btc_monthly.csv` |
+| 11 | LST share of staked ETH (Lido dominance) | `lst-share.svg` | §5a | DefiLlama, §5a |
+| 12 | LST collateral as % of TVL, by lending protocol | `lst-collateral.svg` | §5c | DefiLlama, §5c |
 
-One production note. Blockworks' stake-rate-vs-yield chart puts two different measures
-on two y-axes, which lets the reader infer whatever relationship the axis scaling
-implies — and here it implies a tight inverse link that [§4](#4-todo-1--correlation-between-eth-price-and-staking-yield)
-shows is not there in changes. Don't reproduce that. Stacked panels on a shared x-axis
-show the same two series honestly.
+Lead with #6, the equilibrium curve — it is the one nobody else in this debate has
+published. #7 is the one that pre-empts the most common objection, and it costs a
+sentence to explain.
+
+Two production notes.
+
+**Do not use a dual y-axis for yield against price.** Blockworks' stake-rate-vs-yield
+chart puts two different measures on two y-axes, which lets the reader infer whatever
+relationship the axis scaling implies — and here it implies a tight inverse link that
+[§4](#4-todo-1--correlation-between-eth-price-and-staking-yield) shows is not there in
+changes. Chart #10 shows the same two series as stacked panels on a shared x-axis, which
+is honest about the co-movement without smuggling in a causal reading.
+
+**Every chart states its axes.** The relationships in this piece are unit-sensitive — a
+slope in "pp of monthly return per basis point of APR" means nothing without both units
+named — so titles carry the unit, not just the variable.
 
 ---
 
@@ -556,7 +680,17 @@ adoption.
 | `issuance_model.py` | Issuance, burn fraction, yields, equilibrium solver → `model_output.txt` |
 | `staking_history.py` | Reconstructs staked ETH from on-chain flows → `staked_eth_reconstructed.csv` |
 | `yield_price_analysis.py` | Correlation tests → `correlation_output.txt` |
-| `make_charts.py` | Renders the three embedded charts → `charts/*.svg` |
+| `regression_analysis.py` | OLS with HAC errors, Durbin-Watson, power → `regression_output.txt` |
+| `make_charts.py` | Renders all twelve charts → `charts/*.svg` |
+
+**Data files:** `staked_eth_reconstructed.csv` (monthly staked ETH, consensus APR,
+annualised issuance), `eth_supply_monthly.csv` (monthly burn and priority fees),
+`burn_history.csv` (annual burn), `eth_monthly.csv` and `btc_monthly.csv` (month-end
+closes from CoinGecko, used for every price test in §4).
+
+`regression_analysis.py` implements OLS, the Student-t tail via the incomplete beta
+function, Newey-West HAC standard errors and Durbin-Watson from scratch — no numpy or
+scipy, so the statistics reproduce on a bare Python 3 install.
 
 **Dune SQL** (paste at https://dune.com/queries):
 
