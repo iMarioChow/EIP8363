@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 510" width="880" height="510" role="img"><style>
+  .s{fill:var(--surface)}
+  text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  .ti{fill:var(--ink);font-size:17px;font-weight:600}
+  .sub{fill:var(--ink2);font-size:12.5px}
+  .ax{fill:var(--ink2);font-size:11.5px}
+  .axt{fill:var(--ink2);font-size:11.5px;font-weight:600}
+  .grid{stroke:var(--rule);stroke-width:1}
+  .zero{stroke:var(--rule2);stroke-width:1.5}
+  .note{fill:var(--ink2);font-size:11px}
+  .stat{fill:var(--ink);font-size:12px}
+  .statk{fill:var(--ink2);font-size:12px}
+  .pt1{fill:var(--s1);stroke:var(--surface);stroke-width:1.5}
+  .pt2{fill:var(--s2);stroke:var(--surface);stroke-width:1.5}
+  .fit1{fill:none;stroke:var(--s1);stroke-width:2}
+  .fit2{fill:none;stroke:var(--s2);stroke-width:2}
+  .band{fill:var(--s2);opacity:0.12}
+  .lab1{fill:var(--s1);font-size:12.5px;font-weight:600}
+  .lab2{fill:var(--s2);font-size:12.5px;font-weight:600}
+  :root{--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--rule:#e7e6e2;--rule2:#a9a8a2;
+        --s1:#2a78d6;--s2:#eb6834}
+  @media (prefers-color-scheme:dark){:root{
+        --surface:#1a1a19;--ink:#ffffff;--ink2:#c3c2b7;--rule:#2e2e2c;--rule2:#6a6a64;
+        --s1:#3987e5;--s2:#d95926}}
+</style><rect width="880" height="510" class="s"/><text x="68" y="26" class="ti">The relationship never stabilises</text><text x="68" y="45" class="sub">Rolling 12-month correlation between the monthly change in staking yield and ETH’s monthly return.</text><rect x="68" y="132.4" width="782" height="203.2" class="band"/><line x1="68" y1="410.0" x2="850" y2="410.0" class="grid"/><text x="59" y="414.0" class="ax" text-anchor="end">-1.0</text><line x1="68" y1="322.0" x2="850" y2="322.0" class="grid"/><text x="59" y="326.0" class="ax" text-anchor="end">-0.5</text><line x1="68" y1="234.0" x2="850" y2="234.0" class="zero"/><text x="59" y="238.0" class="ax" text-anchor="end">+0.0</text><line x1="68" y1="146.0" x2="850" y2="146.0" class="grid"/><text x="59" y="150.0" class="ax" text-anchor="end">+0.5</text><line x1="68" y1="58.0" x2="850" y2="58.0" class="grid"/><text x="59" y="62.0" class="ax" text-anchor="end">+1.0</text><path d="M68.0,151.7L94.1,200.5L120.1,203.1L146.2,216.6L172.3,221.8L198.3,261.2L224.4,284.9L250.5,342.7L276.5,352.4L302.6,352.5L328.7,289.4L354.7,299.9L380.8,304.5L406.9,219.0L432.9,194.0L459.0,195.0L485.1,210.9L511.1,220.5L537.2,256.7L563.3,263.8L589.3,270.9L615.4,247.1L641.5,284.3L667.5,281.8L693.6,240.1L719.7,234.3L745.7,234.4L771.8,234.2L797.9,248.4L823.9,250.7L850.0,251.9" class="fit1"/><text x="68.0" y="430.0" class="ax" text-anchor="middle">2024-01</text><text x="224.4" y="430.0" class="ax" text-anchor="middle">2024-07</text><text x="380.8" y="430.0" class="ax" text-anchor="middle">2025-01</text><text x="537.2" y="430.0" class="ax" text-anchor="middle">2025-07</text><text x="693.6" y="430.0" class="ax" text-anchor="middle">2026-01</text><text x="850.0" y="430.0" class="ax" text-anchor="middle">2026-07</text><text x="844" y="124.4" class="note" text-anchor="end">shaded = indistinguishable from zero (95%). 28 of 31 windows sit inside.</text><text x="68" y="456" class="note">A real relationship would hold its sign. This one crosses zero repeatedly and spends most of its life inside the band</text><text x="68" y="471" class="note">where the correlation cannot be distinguished from zero.</text></svg>

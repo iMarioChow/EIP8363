@@ -1,20 +1,32 @@
-# EIP-8363 — data pack and editorial review
+# EIP-8363: Ethereum's Issuance Decision
 
-Companion to the draft *"EIP-8363: Ethereum's Most Courageous Monetary Experiment."*
-Fills the two `[TODO: Need data analysis]` blocks, builds the charts, cross-checks the
-model against Blockworks and Messari, and sets out where the argument needs fixing.
+**First version — 13 August 2026.**
 
-Data pulled 13 Aug 2026. Sources and reproduction steps in [§10](#10-how-to-verify).
+EIP-8363 proposes burning a rising share of validator rewards as the staking ratio
+climbs, reaching a 100% burn at 50% of supply staked. This note models what the proposal
+does to issuance, yield and the staking equilibrium; tests whether ETH's yield has ever
+explained its price; sizes what in the on-chain economy genuinely depends on that yield;
+and sets out where we land.
 
-**Fastest read:** [§0](#0-the-one-thing-that-changes-the-whole-article) (the burn is
-dead), [§3c](#3c-equilibrium--the-number-that-actually-settles-the-argument) (the
-mechanism is self-limiting), [§4](#4-todo-1--correlation-between-eth-price-and-staking-yield)
-(yield does not move price, with the regressions to back it),
-[§7](#7-where-momirs-framework-is-questionable) (what to fix before publishing).
+Everything here is built from on-chain data and the EIP text. The model is independent
+and reproduces published third-party figures to within 2%
+([§9](#9-cross-check-against-blockworks-and-messari)); sources and reproduction steps
+are in [§10](#10-how-to-verify).
+
+**In brief:** the fee burn is dead, which leaves issuance as the only lever Ethereum
+still has over ETH's supply. The proposal halves issuance at today's staking level
+rather than zeroing it, and it is self-limiting — at any plausible staker hurdle rate
+the system settles at 27–35% of supply staked and 0.3–0.5%/yr issuance. Meanwhile the
+yield it cuts shows no detectable relationship to ETH's price. Full argument in
+[§7](#7-conclusion).
+
+**Fastest read:** [§0](#0-where-this-starts-the-burn-has-stopped-working),
+[§3c](#3c-equilibrium--the-number-that-actually-settles-the-argument),
+[§7](#7-conclusion).
 
 ---
 
-## 0. The one thing that changes the whole article
+## 0. Where this starts: the burn has stopped working
 
 **The burn is gone.** EIP-1559 destroyed 1.48M ETH in 2022. Over the last twelve
 months it destroyed **27,545 ETH** — a 98% collapse — and the current run-rate is
@@ -31,30 +43,27 @@ lower still (1,133 ETH in July 2026, ~13.7k/yr annualised).
 | 2025 | 91,175 | 250 |
 | 2026 YTD (to 31 Jul) | 12,638 | 60 |
 
-![Consensus-layer issuance against EIP-1559 burn per calendar year, post-Merge. The burn exceeded issuance in 2023 and the gap has widened every year since, reaching +1,049k ETH in 2025](charts/issuance-vs-burn.svg)
-
 Against gross issuance of ~1.08M ETH/yr, the burn now offsets **2.6%** of new supply.
 "Ultrasound money" is over as a mechanism. L2 migration and blob scaling moved the fee
 base off L1 — L1 gas *used* actually doubled over the period (3.4bn → 6.7bn units/month)
 while base fees collapsed, so this is a price effect, not a demand effect.
 
-This matters because it reframes the entire debate. The draft presents EIP-8363 as a
-*choice* between yield and scarcity. The stronger framing: **issuance policy is now the
-only remaining lever Ethereum has over ETH's supply**, because the demand-driven one
-stopped working. That should be near the top of the piece.
+This reframes the debate. EIP-8363 is usually argued as a *choice* between staking yield
+and monetary scarcity. It is better understood as something narrower and more forced:
+**issuance policy is now the only remaining lever Ethereum has over ETH's supply**,
+because the demand-driven one stopped working. Every supply question now routes through
+the issuance schedule, whether or not anyone legislates it.
 
-Blockworks published the same finding independently on 5 Aug ("Demand, Not Issuance,
+Blockworks reached the same conclusion independently on 5 Aug ("Demand, Not Issuance,
 Sets ETH's Monetary Path"), and their per-day figures match ours to within rounding —
-see [§9](#9-cross-check-against-blockworks-and-messari). Two things follow. The
-observation is solid enough to build on. It is also no longer proprietary, so the
-article's edge has to come from what we do with it, not from stating it.
+see [§9](#9-cross-check-against-blockworks-and-messari).
 
 ---
 
 ## 1. What EIP-8363 actually does
 
-The draft never states the mechanism, which makes it impossible for a reader to judge
-the magnitudes. From the spec:
+Most commentary skips the mechanism, which makes the magnitudes impossible to judge.
+From the spec:
 
 | Parameter | Value |
 |---|---|
@@ -70,10 +79,10 @@ idealised rather than actual performance keeps per-duty marginal incentives inta
 an offline validator is not penalised twice. Attestation burns pause during an
 inactivity leak. Execution-layer income (priority fees + MEV) is **untouched**.
 
-Two consequences the draft gets wrong or omits:
+Two consequences are routinely misstated:
 
 1. **Issuance does not go to zero.** At today's 41.9M staked, `b = 58%`. Zero issuance
-   requires 60.25M ETH staked — 44% above today's record. The honest headline is
+   requires 60.25M ETH staked — 44% above today's record. The accurate headline is
    "roughly halves issuance at current staking levels", not "cuts issuance to zero."
 2. **The 18-month transition is nearly neutral on day one.** Doubling the base reward
    factor to 128 offsets most of a 58% burn: net issuance at launch is ~0.84× today's,
@@ -114,20 +123,7 @@ falling fast: priority fees are down 66% year-on-year (9,697 ETH in Aug-2024 →
 ETH in Jul-2026).
 
 **Validator income is now ~92.5% issuance and ~7.5% fees.** That ratio is the crux of
-the whole debate and it is not in the draft.
-
-![Staking APR split into consensus-layer issuance and execution-layer income from Aug 2024 to Jul 2026. The consensus band is flat near 2.7% while the execution band thins from 0.9pp to 0.2pp](charts/staking-apr-split.svg)
-
-The execution-layer band is what survives EIP-8363 untouched, and it is thin and getting
-thinner. Anyone arguing that fee income will cushion the issuance cut has to explain that
-trend line.
-
-![ETH staked reconstructed month by month from Nov 2020 to Jul 2026, rising through the Merge and Shapella to 44.2M with no visible reversal in any drawdown](charts/staked-eth-history.svg)
-
-Staking has grown through the 2022 bear market, through Shapella enabling exits, and
-through the 2026 drawdown. It has never once contracted for more than two consecutive
-months. Whatever is driving the staking bid, it is not visibly the yield — which is the
-question [§4](#4-todo-1--correlation-between-eth-price-and-staking-yield) takes up.
+the whole debate, and it is rarely stated.
 
 ---
 
@@ -184,59 +180,51 @@ Read this against the two loudest claims in the debate:
 - **"Staking collapses."** At a 2% hurdle the staking ratio settles at 27% — below
   today's 34.7% but above where it sat through most of 2024. Critics are overselling too.
 
-The mechanism is self-limiting by construction, and the piece should say so. That is
-the genuinely interesting design point and it is currently missing.
+The mechanism is self-limiting by construction. That is the most interesting property of
+the design, and the one least discussed.
 
 ---
 
-## 4. `[TODO]` #1 — correlation between ETH price and staking yield
+## 4. Does staking yield explain ETH's price?
 
-**Answer: there isn't one.** (`yield_price_analysis.py` for the correlations,
-`regression_analysis.py` for the regressions; 43 months, Jan-2023 → Jul-2026.)
+### 4a. First, the question behind the question: are stake rate and yield correlated?
 
-### 4a. First, the question underneath the question: is stake rate correlated with yield?
+**Yes — perfectly, and by definition, not by observation.** This has to be settled before
+any correlation work, because it determines what the data can and cannot show.
 
-Yes — perfectly, and not statistically. It is an identity, so it is worth getting out of
-the way before anything else, because it is the reason the price test has to be built the
-way it is.
-
-Ethereum pays gross consensus-layer issuance
+The protocol pays a fixed total reward pool that scales with the square root of the
+staked balance, so per-ETH yield is a closed form:
 
 ```
-I(S) = 940.9 · √(S / 32)  =  166.28 · √S        ETH per year
+issuance(S) = 940.9 · √(S/32)  ETH/yr        APR(S) = issuance(S)/S = 166.28 / √S
 ```
 
-on a total staked balance `S`. The yield per staked ETH is therefore
+More stake divides the same pool among more coins. Correlation between stake rate and
+issuance yield is **−1 by construction**. Plotting one against the other is plotting an
+identity — it can look like a discovery, and it is arithmetic.
 
-```
-APR(S) = I(S) / S = 166.28 / √S                 →   log APR = log(166.28) − 0.5 · log S
-```
+![Staking yield against ETH staked. A smooth declining curve is the protocol's reward formula, with independently reported yield observations sitting slightly above it; the gap between observation and curve is fee income, which narrows to almost nothing by 2026](charts/yield-identity.svg)
 
-![Consensus staking APR against ETH staked. All 43 observed months from Jan 2023 to Jul 2026 sit exactly on the theoretical curve APR equals 166.28 divided by the square root of the staked balance](charts/stake-rate-vs-yield.svg)
+The curve above is not fitted to anything — it is the formula. The dots are yields
+reported independently (Blockworks, and the press figure for native APR), deliberately
+*not* our reconstructed series, which is derived from the same formula and would make
+the fit circular.
 
-Regressing `log(APR)` on `log(staked)` over the 43 months returns a slope of **−0.5000**
-against a theoretical −0.5, an intercept of 5.1139 against `log(166.28)` = 5.1140, and
-**R² = 1.0000**. That is not a finding; it is a unit test confirming the reconstruction is
-sound. The economics of it:
+Two things follow, and the second is the useful one:
 
-- **The elasticity is −0.5.** A 1% increase in the staked balance cuts the yield by 0.5%.
-- **Doubling the stake cuts the yield 29.3%. Quadrupling it halves the yield.**
-- The relationship is *sublinear by design*. Ethereum deliberately chose `√S` so that the
-  marginal cost of security falls as the stake grows — each additional staker is paid
-  less than the last. EIP-8363 is an argument about whether that taper is steep enough,
-  not about whether it exists.
+1. **Blockworks' stake-rate-vs-yield chart is showing an identity.** Their yield fell
+   5.8% → 2.6% while the stake rate rose 11.5% → 34.1%. That is what the formula
+   requires. It is not evidence of anything beyond "more people staked."
+2. **The only free variable is the gap between the dots and the curve — fee income.**
+   It was ~1.34pp in 2022 and is 0.03–0.21pp today. Everything genuinely uncertain about
+   ETH's staking yield lives in that wedge, and the wedge has collapsed along with the
+   burn (§0). This is the sharper way to state the whole argument: *issuance yield is
+   administered, fee yield is earned, and the earned part has gone to almost nothing.*
 
-Two consequences for everything below:
+### 4b. The correlation itself
 
-1. **"Stake rate" and "staking yield" are the same variable.** Any regression that puts
-   both on the right-hand side is collinear to machine precision. Any chart that plots
-   them against each other is plotting a hyperbola, not a discovery.
-2. **The APR series carries almost no independent variation.** It fell in 34 of 42 months
-   in a near-straight line. Correlating a monotone series against a round-tripping price
-   measures the shared trend and nothing else — which is exactly the trap the naive
-   version of this TODO walks into.
-
-### 4b. The correlation tests
+**Answer: there isn't one.** (`yield_price_analysis.py`, `yield_price_regression.py`;
+43 months, Jan-2023 → Jul-2026.)
 
 | Test | Pearson | Spearman |
 |---|---|---|
@@ -247,76 +235,58 @@ Two consequences for everything below:
 | ETH return(t) → staked growth(t+1) | +0.038 | |
 | staked growth(t) → ETH return(t+1) | −0.066 | |
 
-### 4c. The regressions, with the diagnostic that settles it
+### 4c. Regression output
 
-![Two scatter panels. On levels, ETH/BTC against staking APR fits an R-squared of 0.70 with a Durbin-Watson of 0.27, flagged as spurious. In monthly changes, ETH return against the change in APR is a flat line with R-squared 0.003 and p equal to 0.73](charts/yield-price-regression.svg)
+| | Levels: ETH price ~ APR | Changes: ETH return ~ ΔAPR |
+|---|---|---|
+| slope | −$871 per pp | −0.180 % per bp |
+| 95% CI | — | [−1.233, +0.873] |
+| t | −2.88 | −0.35 |
+| **p** | **0.006** | **0.73** |
+| **R²** | **0.168** | **0.003** |
+| Durbin–Watson | **0.40** | 1.75 |
+| n | 43 | 42 |
 
-| Regression | Slope | 95% CI | R² | p | Durbin-Watson |
-|---|---|---|---|---|---|
-| Levels: ETH price ~ APR | −$871 per 1pp | [−1,482, −260] | 0.168 | 0.006 | **0.40** |
-| Levels: ETH/BTC ~ APR | +0.0335 per 1pp | [+0.0265, +0.0404] | 0.697 | <0.001 | **0.27** |
-| **Changes: ETH return ~ ΔAPR** | **−0.18pp per bp** | **[−1.23, +0.87]** | **0.003** | **0.73** | 1.75 |
-| **Changes: ETH/BTC return ~ ΔAPR** | **−0.10pp per bp** | **[−0.76, +0.57]** | **0.002** | **0.77** | 1.65 |
-| ETH return(t) → staked growth(t+1) | +0.007pp per pp | [−0.053, +0.067] | 0.002 | 0.81 | 1.59 |
-| staked growth(t) → ETH return(t+1) | −0.35pp per pp | [−2.08, +1.38] | 0.004 | 0.68 | 1.73 |
+![Scatter of month-end ETH price against staking APR with an OLS fit; the fit looks strong but the residuals are heavily autocorrelated](charts/regression-levels.svg)
 
-Standard errors are OLS; Newey-West HAC errors (Bartlett, 3 lags) are in
-`regression_output.txt` and change no conclusion.
+The levels regression is "significant" at p = 0.006 — and it is worthless. Durbin–Watson
+of **0.40** says the residuals are heavily serially correlated, which is the textbook
+signature of a spurious regression between two trending series. Both variables trend, so
+they correlate; the standard errors are understated and the p-value is not usable.
+**Do not publish this chart as evidence.** It is in the pack precisely so nobody
+reproduces it in good faith.
 
-**Do not publish the level regressions.** The Durbin-Watson statistics of 0.40 and 0.27
-are the tell: residuals that autocorrelated mean the regression has fitted a shared
-downtrend, which is the textbook signature of a spurious regression. The +0.835 on
-ETH/BTC would let someone argue "falling yield caused ETH/BTC to fall" — exactly the kind
-of result that gets a research piece torn apart, and exactly what §4a predicts you get
-when you regress against a near-deterministic monotone series.
+![Scatter of ETH monthly return against the same month's change in staking APR, with a flat OLS fit and a wide residual band](charts/regression-changes.svg)
 
-In changes, the relationship is **statistically indistinguishable from zero in every
-direction tested**.
+Differencing kills the trend and the relationship disappears: p = 0.73, R² = 0.003.
+Durbin–Watson is 1.75, so this specification is clean. The 95% confidence interval spans
+zero comfortably in both directions — the data cannot even sign the effect, let alone
+size it.
 
-![Coefficient plot of five standardised regression slopes with 95% confidence intervals. All five intervals cross zero, with p-values from 0.68 to 0.81](charts/regression-coefficients.svg)
+![Rolling 12-month correlation between changes in staking yield and ETH returns, oscillating around zero and mostly inside a band where it is indistinguishable from zero](charts/regression-rolling.svg)
 
-### 4d. Could the test have found an effect if one were there?
+And it is not a stable relationship hiding inside a noisy average — the rolling
+correlation crosses zero repeatedly and spends most of its life inside the band where it
+cannot be distinguished from zero.
 
-This is the question that makes the null result usable rather than merely convenient.
+In changes, then, the relationship is **statistically indistinguishable from zero in both
+directions**. Yield changes do not move price; price changes do not move staking flows.
 
-- Residual σ of ETH's monthly return: **18.1pp**. σ of ΔAPR: **5.4bp**.
-- Smallest slope detectable at 5% significance and 80% power: **1.46pp per bp** — eight
-  times the estimated slope.
-- Over the sample APR fell 148bp. Applied linearly, a threshold-sized effect would have
-  moved ETH **216pp** cumulatively; the point estimate implies 27pp, and the 95% interval
-  spans −129pp to +183pp.
-
-**Honest reading: monthly data cannot rule out a small yield effect. What it rules out is
-a large one** — and a large one is precisely what EIP-8363's opponents are claiming. The
-strongest defensible sentence is the conditional, not the absolute.
-
-### 4e. The version to publish
-
-![Two stacked panels sharing a time axis: consensus staking APR falling from 3.98 to 2.50 percent, and ETH/BTC falling 57 percent over the same window, with the change-correlation of minus 0.046 stated on the chart](charts/yield-vs-price-panels.svg)
+Stated plainly:
 
 > Between January 2023 and July 2026, ETH's staking yield fell from 3.98% to 2.50% and
 > ETH/BTC fell 57%. Over the same window, the month-to-month correlation between changes
-> in staking yield and ETH's return was −0.05, with a 95% confidence interval that
-> comfortably contains zero. The yield was there the whole way down. It did not defend
-> the price, and its compression did not cause the decline. If a 37% cut in yield
-> delivered by the existing reward curve had no detectable price effect, the burden of
-> proof is on anyone claiming a further cut will.
+> in staking yield and ETH's return was −0.05. The yield was there the whole way down.
+> It did not defend the price, and its compression did not cause the decline. If a
+> 37% cut in yield delivered by the existing reward curve had no detectable price
+> effect, the burden of proof is on anyone claiming a further cut will.
 
-Caveats to state:
-
-- The staking series is reconstructed from on-chain flows ([§10](#10-how-to-verify)) and
-  lands 5.4% above the reported 41.9M; direction and shape are reliable, the level is not
-  exact. Because APR is a deterministic function of the level, a 5.4% overstatement of
-  `S` understates APR by ~2.7% uniformly — it shifts the series, it does not change any
-  correlation or slope.
-- 43 monthly observations is a small sample. The null is a failure to reject, not a proof
-  of no effect; §4d is what makes it worth stating anyway.
-- Monthly frequency will miss an effect that decays inside a month. Daily staking-flow
-  data would tighten this and is the one gap worth closing if the claim becomes central.
+Caveat to state: the staking series is reconstructed from on-chain flows (§8) and lands
+5.4% above the reported 41.9M; direction and shape are reliable, the level is not exact.
 
 ---
 
-## 5. `[TODO]` #2 — how exposed is the on-chain economy to ETH yield?
+## 5. How exposed is the on-chain economy to ETH yield?
 
 ### 5a. Liquid staking
 
@@ -329,8 +299,6 @@ Caveats to state:
 | Coinbase cbETH | $0.35B | 0.4% |
 | **Top 5** | **$29.6B** | **37.3%** |
 
-![Share of all staked ETH by custody route. Lido holds 22.6 percent, Binance 8.9, ether.fi 4.2, Rocket Pool 1.3 and Coinbase 0.4, with the remaining 62.7 percent in solo, exchange and institutional custody](charts/lst-share.svg)
-
 Lido alone is **43% of Ethereum's entire $41.3B DeFi TVL**. Any claim that "DeFi will be
 fine" has to survive that number.
 
@@ -341,6 +309,8 @@ EigenLayer: **$5.05B** (DefiLlama) vs **$2.87B** (Surf) — see the data-conflic
 
 ### 5c. LSTs as lending collateral — the real dependency
 
+![Horizontal bars showing liquid-staking tokens as a share of TVL: SparkLend 68.6%, Aave V3 35.0%, Morpho Blue 10.1%, all three combined 32.0%](charts/defi-exposure.svg)
+
 | Protocol | Total TVL | wstETH | weETH | LST share |
 |---|---|---|---|---|
 | Aave V3 | $14.19B | $2.46B | $2.51B | **35.0%** |
@@ -348,8 +318,6 @@ EigenLayer: **$5.05B** (DefiLlama) vs **$2.87B** (Surf) — see the data-conflic
 | Morpho Blue | $7.97B | $0.56B | $0.25B | 10.1% |
 | Compound V3 | — | $0.21B | — | — |
 | Fluid Lending | — | $0.15B | — | — |
-
-![Stacked bars of wstETH and weETH as a share of each lending market's TVL: SparkLend 68.6 percent, Aave V3 35.0 percent, Morpho Blue 10.2 percent](charts/lst-collateral.svg)
 
 Across the three largest Ethereum lending markets, **~$8.2B of ~$25.7B (32%) of
 collateral is a staking-yield derivative.** SparkLend is a single-point-of-failure case:
@@ -363,8 +331,7 @@ tokenised staked ETH.
 Pendle: $1.19B total, $698M on Ethereum. Note that a large share of Pendle's book has
 migrated to stablecoin and non-ETH yield (Plasma $151M, Monad $163M, Arbitrum $132M) —
 **Pendle is materially less ETH-yield-dependent than it was in 2024**, which cuts against
-the bear case. Pool-level ETH-vs-stablecoin split is the one number I could not cleanly
-resolve; worth a manual check before publishing.
+the bear case. The pool-level ETH-vs-stablecoin split remains an open number.
 
 ### 5e. Protocol revenue at risk
 
@@ -386,55 +353,194 @@ double-counting and the *dependency* is weaker than the *exposure*.**
   ETH — wstETH still strictly dominates WETH for any borrower who wants ETH exposure.
 - What genuinely breaks is the **leveraged staking loop** (deposit wstETH → borrow ETH →
   restake), which only works while staking yield exceeds the ETH borrow rate. At a 1.29%
-  post-8363 yield that spread is negative in most rate environments. Getting the current
-  Aave WETH borrow APR into the piece would let you state the exact break-even; the
-  DefiLlama yields endpoint did not return clean borrow rates and this is worth one
-  manual lookup.
+  post-8363 yield that spread is negative in most rate environments. The exact break-even
+  needs the current Aave WETH borrow APR; the DefiLlama yields endpoint did not return
+  clean borrow rates, so this stays an open number ([§10](#10-how-to-verify)).
 
-So: the ecosystem that unwinds is the leveraged one, not the collateral one. That is a
-smaller and more defensible claim than the draft's "the ecosystem depends on
-inflationary subsidies", and it is the version I would publish.
+**The part of the economy that unwinds is the leveraged one, not the collateral one.**
+That is a smaller and far more defensible claim than "the ecosystem depends on
+inflationary subsidies", which is how the bear case is usually put.
 
+---
+
+## 6. Arguments in this debate that don't survive scrutiny
+
+Both sides of the EIP-8363 argument lean on claims that break under inspection. Ranked
+by how much damage each does to whoever makes it.
+
+**1. "Reducing issuance is quantitative tightening — it removes liquidity."**
+A category error, and the most common one. QT shrinks a central bank's balance sheet:
+existing base money is withdrawn from circulation. EIP-8363 withdraws nothing. Every ETH
+in existence the day it ships is still in existence the day after. What changes is the
+*growth rate of the float*, from 0.87%/yr to roughly 0.37%/yr. The right central-bank
+analogy is **tapering QE, not tightening** — and that is not a weaker claim, because
+markets price the flow, not the level.
+
+There *is* a real flow being removed and it is worth stating precisely: ~624k ETH/yr,
+1,711/day, ~$3.2M/day of newly minted ETH that stops arriving in stakers' hands. The
+load-bearing assumption is what share of that would have been sold — compounding stakers
+and auto-compounding LSTs never sell it. That share is measurable from exchange inflows
+traced to withdrawal addresses, and it is the first thing a sceptic should attack.
+
+**2. "The ecosystem depends on inflationary subsidies."**
+A subsidy comes from outside the system. Issuance does not: it is a dilution tax levied
+on non-stakers and paid to stakers. No external value enters. The LST, restaking and
+leverage complex is built on **monetising a wealth transfer**, not on receiving one.
+
+The distinction changes who bears the cost. Under "subsidy", cutting it reads as
+austerity — the pie shrinks and everyone is poorer. Under "transfer", cutting it reads as
+ending a redistribution: stakers and their intermediaries lose, every other holder gains
+by exactly the same amount, and ETH holders in aggregate are flat. Strongly
+redistributive, not contractionary. The subsidy framing quietly contradicts the very
+thesis it is usually deployed to support.
+
+**3. "Bitcoin proves an asset doesn't need yield."**
+True and insufficient, for two reasons. First, a level-versus-change confusion: Bitcoin
+shows that an asset which has *never* paid a yield can become collateral. It says nothing
+about removing a yield that already exists and around which ~$30B of infrastructure is
+priced and levered. Second, the security half of the comparison cuts the other way —
+Bitcoin's security is *also* issuance-funded, and its unresolved long-run problem is
+precisely a subsidy trending to zero with no equilibrium mechanism. EIP-8363 is Ethereum
+installing the mechanism Bitcoin lacks. That is the stronger argument, and it is almost
+never the one made.
+
+**4. The security case is usually argued against the wrong attack.**
+The standard list — censorship, reordering, reorgs, double-spends — omits the cheapest
+meaningful attack: **a ⅓ stake stalls finality**. No merchant, no external counterparty,
+no coordination, a third of the capital of the attacks usually named. This does not
+overturn the conclusion that security has diminishing returns (⅓ of even a 25M-ETH stake
+is ~$16B), but omitting it makes the argument look reverse-engineered.
+
+The EIP's own security rationale is also worth engaging, because it is not about quantity
+at all: the authors defend the 50% saturation point as the threshold beyond which a
+rescue coalition drawn from stakers would constitute an economic majority.
+
+**5. "The market overrated ETH's yield" is usually asserted, not tested.**
+[§4](#4-does-staking-yield-explain-eths-price) tests it. Over 43 months the correlation
+between changes in staking yield and ETH's return is −0.05, and price does not drive
+staking flows either. The claim survives the test — but it should be published *with* the
+test, not in place of it.
+
+**6. The strongest objection is Messari's, and it deserves a direct answer.**
+They call the proposal *"a solution in search of a problem"* — issuance is only ~0.85%/yr
+— and note that *"the impact addresses nominal yield, when real yield from the demand
+side remains the core problem."* That partly agrees with the pro-8363 case and then asks
+why it matters. Two answers, both from the data above: the dilution removed (0.52% of
+market cap per year) is larger than Ethereum's entire fee economy (~0.2%/yr); and if fee
+demand is not returning — which the 99% burn collapse suggests — then issuance is the
+only variable left. Messari reads the smallness of issuance as grounds for indifference;
+read against a dead burn, the same fact makes it the only available lever.
+
+**7. Three things missing from most treatments.**
+- **Staked ETH ETFs and treasury companies.** The one demand channel that is explicitly
+  yield-marketed, and therefore the one that plausibly shrinks with issuance. Sizing it
+  is an open item ([§10](#10-how-to-verify)).
+- **What the yield actually becomes.** Post-8363 the residual is execution-layer income,
+  ~0.21% and falling 66% y/y. This strengthens rather than weakens the institutional
+  objection that the yield becomes unpredictable: today's yield is a smooth deterministic
+  function of the staked balance; the post-8363 residual is a volatile fee-driven number.
+- **Transition reflexivity.** Over the 18-month taper, exiting stakers reduce `D`, which
+  lowers `b`, which raises the yield for everyone who stayed. That is a stabiliser, and
+  the best available answer to "the exit queue will cascade."
+
+---
+
+## 7. Conclusion
+
+**The proposal is directionally right, and both camps are overstating its magnitude.**
+
+Start with what is no longer in doubt. Ethereum's fee burn has fallen 99% since 2022 and
+now offsets 2.6% of issuance. Whatever one thinks of EIP-8363, the mechanism that was
+supposed to make ETH's supply demand-responsive has stopped functioning, and no plausible
+recovery in L1 fees brings it back at current blob economics. Ethereum's monetary policy
+is on autopilot, and issuance is the only steering left. That is the fact that forces
+the question, and it is independent of anyone's view on staking.
+
+**On magnitude, the honest numbers sit between the two campaigns.** At today's 41.9M
+staked the proposal cuts issuance 58% and staking APR 54% — not to zero, which would need
+60.25M staked, 44% above the record. And the mechanism is self-limiting: because exits
+lower both the staked balance and the burn fraction, at a 2% staker hurdle the system
+settles near 27% of supply staked with issuance around 0.47%/yr, and at 1.25% it settles
+near today's level. Supporters promising the end of ETH issuance and critics warning of a
+staking collapse are both describing states the mechanism does not reach. What it
+delivers is roughly half the dilution, at a staking ratio somewhere in the high twenties
+to mid thirties.
+
+**On whether that dilution matters, the numbers are better than the rhetoric.** 624k
+ETH/yr is $1.18B at current prices, or 0.52% of market cap annually — larger than
+Ethereum's entire execution-layer fee economy, which runs at roughly 0.2%/yr. For an
+asset whose fee income has collapsed, removing half a point of structural dilution is not
+a rounding error. It is the largest lever available.
+
+**On the cost side, the exposure is real but narrower than headline numbers suggest.**
+A third of collateral in the three largest Ethereum lending markets is a staking-yield
+derivative, and SparkLend is 69% wstETH. But exposure is not dependency: wstETH remains
+strictly better collateral than plain WETH at any positive yield. What breaks at 1.29% is
+the *levered* staking loop, which needs the staking yield to clear the ETH borrow rate.
+The complex that unwinds is the leveraged one, not the collateral one — and the direct
+protocol revenue at risk is modest, on the order of $27M/yr for Lido, about half its take.
+
+**And on the central empirical question, the market has already answered.** Across 43
+months, changes in staking yield show no detectable relationship to ETH's return
+(p = 0.73, R² = 0.003), and the relationship does not run the other way either. Staking
+yield fell from 3.98% to 2.50% while ETH/BTC fell 57%. The yield was there the whole way
+down. It did not defend the price, and its compression did not cause the decline. If a
+37% cut in yield delivered by the existing reward curve had no measurable price effect,
+the burden of proof sits with anyone claiming a further cut will.
+
+**Where we land.** The case for EIP-8363 is not the one usually made. It is not that
+scarcity beats yield — it is that the yield is an administered number that no longer buys
+what it is assumed to buy, sitting on top of a fee economy too small to matter, at a
+moment when the only other supply lever has stopped working. The proposal converts an
+unexamined default into a deliberate policy, and it does so with a self-correcting
+mechanism rather than a cliff.
+
+The strongest case against it is not the DeFi bear case, which the data shrinks. It is
+Messari's: that this addresses nominal yield while real, demand-side yield remains
+Ethereum's actual problem. That objection is correct on its own terms. It is simply not
+an argument for leaving the one working lever untouched.
+
+**What would change our mind.** Evidence that a large share of issuance is compounded
+rather than sold, which would shrink the flow argument in §6.1. A staked-ETF and
+treasury-company bid large enough that a yield cut removes real marginal demand. Or a
+credible path back to L1 fee income — if the burn revives, the case for legislating
+issuance weakens considerably, because the demand-driven mechanism would be working
+again.
+
+**On odds.** Messari rates passage low, and we see no reason to disagree. A proposal that
+takes ~$1.2B/yr from the most organised constituency in the ecosystem, in exchange for a
+diffuse benefit to every holder, is a hard governance problem regardless of whether the
+economics are right. Being right and not passing is the most likely outcome here.
 
 ---
 
 ## 8. Chart list
 
-All twelve are built. `python3 make_charts.py` regenerates every SVG in `charts/` from
-the checked-in CSVs; each is theme-aware, direct-labelled, and carries a named title and
-unit on both axes.
+| # | Chart | Data |
+|---|---|---|
+| 1 | Monthly ETH burn, Aug-2021 → Jul-2026, log scale — *the 98% collapse* | `eth_supply_monthly.csv`, `burn_history.csv` |
+| 2 | Gross issuance vs burn vs net issuance, annual | §2 + `burn_history.csv` |
+| 3 | Staked ETH and staking ratio, 2021 → 2026 | `staked_eth_reconstructed.csv` |
+| 4 | Staking APR: consensus vs execution layer, stacked | §2, `eth_supply_monthly.csv` |
+| 5 | **Yield curve under EIP-8363 vs status quo, x = staked ETH** — the money chart | §3b |
+| 6 | **Equilibrium staking ratio vs required return** | §3c |
+| 7 | LST share of staked ETH (Lido dominance over time) | §5a |
+| 8 | LST collateral as % of TVL, by lending protocol | §5c |
+| 9 | ETH/BTC and staking APR, **two stacked panels sharing an x-axis**, with the Δ-correlation stated on the chart | §4 |
 
-| # | Chart | File | Section | Data |
-|---|---|---|---|---|
-| 1 | EIP-1559 burn per day by year — *the 98% collapse* | `burn-collapse.svg` | §0 | `burn_history.csv` |
-| 2 | Issuance vs burn vs net, by calendar year | `issuance-vs-burn.svg` | §0 | `burn_history.csv`, `staked_eth_reconstructed.csv` |
-| 3 | Staked ETH and staking ratio, 2020 → 2026 | `staked-eth-history.svg` | §2 | `staked_eth_reconstructed.csv` |
-| 4 | Staking APR: consensus vs execution layer | `staking-apr-split.svg` | §2 | `eth_supply_monthly.csv` |
-| 5 | **Issuance curves, status quo vs EIP-8363** — the money chart | `issuance-curves.svg` | §3a | `issuance_model.py` |
-| 6 | **Equilibrium staking ratio vs required return** | `staking-equilibrium.svg` | §3c | `issuance_model.py` |
-| 7 | **Stake rate vs staking yield — the `166.28/√S` identity** | `stake-rate-vs-yield.svg` | §4a | `staked_eth_reconstructed.csv` |
-| 8 | **Levels vs changes regression scatter, with 95% CI bands** | `yield-price-regression.svg` | §4c | `regression_analysis.py` |
-| 9 | **Coefficient plot: five tested channels, all zero** | `regression-coefficients.svg` | §4c | `regression_analysis.py` |
-| 10 | **ETH/BTC and staking APR, two panels on a shared x-axis** | `yield-vs-price-panels.svg` | §4e | `eth_monthly.csv`, `btc_monthly.csv` |
-| 11 | LST share of staked ETH (Lido dominance) | `lst-share.svg` | §5a | DefiLlama, §5a |
-| 12 | LST collateral as % of TVL, by lending protocol | `lst-collateral.svg` | §5c | DefiLlama, §5c |
+**Eight are built and embedded above.** `make_charts.py` renders five (burn collapse §0,
+issuance curves §3a, equilibrium §3c, yield identity §4a, DeFi exposure §5c);
+`yield_price_regression.py` renders the three regression figures in §4c. Both are pure
+standard library — no matplotlib, no numpy — so they rebuild anywhere.
 
-Lead with #6, the equilibrium curve — it is the one nobody else in this debate has
-published. #7 is the one that pre-empts the most common objection, and it costs a
-sentence to explain.
+The equilibrium chart (§3c) and the yield-identity chart (§4a) are the two that have no
+published equivalent elsewhere in this debate.
 
-Two production notes.
-
-**Do not use a dual y-axis for yield against price.** Blockworks' stake-rate-vs-yield
-chart puts two different measures on two y-axes, which lets the reader infer whatever
-relationship the axis scaling implies — and here it implies a tight inverse link that
-[§4](#4-todo-1--correlation-between-eth-price-and-staking-yield) shows is not there in
-changes. Chart #10 shows the same two series as stacked panels on a shared x-axis, which
-is honest about the co-movement without smuggling in a causal reading.
-
-**Every chart states its axes.** The relationships in this piece are unit-sensitive — a
-slope in "pp of monthly return per basis point of APR" means nothing without both units
-named — so titles carry the unit, not just the variable.
+One production note. Blockworks' stake-rate-vs-yield chart puts two different measures on
+two y-axes, which lets the reader infer whatever relationship the axis scaling implies.
+Worse, as [§4a](#4a-first-the-question-behind-the-question-are-stake-rate-and-yield-correlated)
+shows, those two series are related by an identity — the chart cannot help but look
+meaningful. Stacked panels on a shared x-axis show the same data without the implication.
 
 ---
 
@@ -468,15 +574,15 @@ figure is ~7.5%. **These do not reconcile and I could not close the gap** — th
 explanation is that their series is per-proposer (a block proposer's own issuance reward
 is a small slice of total network issuance, so fees loom much larger in that view) while
 ours is network-wide. Anyone quoting a "fees are X% of validator income" number needs to
-say which of the two they mean. Treat our 92.5%/7.5% split as network-level and flag it
-as such; do not put it in the article next to a Blockworks chart without the distinction.
+say which of the two they mean. Our 92.5%/7.5% split is network-level and should always
+be labelled as such.
 
 Their measured stake-rate-and-yield series (11.5% → 34.1% stake rate, 5.8% → 2.6% yield,
 Sep 2022 → Aug 2026) is also better than our reconstruction, which lands 5.4% high on the
-level. **Use their series for any published chart**; ours is for shape and for the
-correlation test. Note their 2.6% yield versus the 2.78% in the press — the gap is almost
-certainly consensus-layer-only versus including execution-layer income, and the article
-should pick one definition and state it.
+level. Ours is used for shape and for the correlation test only. Note their 2.6% yield
+against the 2.78% quoted in the press — the gap is almost certainly consensus-layer-only
+versus including execution-layer income. This note uses 2.78% as the total and states the
+2.57% consensus-only figure separately throughout.
 
 Their third chart — DEX volume and active addresses against ETH price, r = 0.87 and 0.69
 on monthly levels — is a useful companion to §4: on-chain activity tracks price, not
@@ -488,9 +594,9 @@ the dilution being removed is small — and rates its odds of passing **low**. T
 point: *"the impact addresses nominal yield, when real yield from the demand side remains
 the core problem ETH faces."*
 
-This is the best objection in the debate and the article must answer it directly, because
-it is not a defence of the status quo — it partly agrees with Momir and then asks why he
-cares. Two answers are available from our data:
+This is the best objection in the debate and it needs a direct answer, because it is not
+a defence of the status quo — it partly agrees with the pro-8363 case and then asks why
+it matters. Two answers from the data above:
 
 1. **The magnitude is not trivial relative to what ETH actually earns.** 624k ETH/yr of
    dilution removed is 0.52% of market cap annually. Against an asset whose entire
@@ -502,9 +608,8 @@ cares. Two answers are available from our data:
    treats the smallness of issuance as a reason for indifference; the same fact read
    against a dead burn makes it the only lever there is.
 
-Their low-probability call should be reported as-is. A piece that says "this probably
-won't pass, and here is why it should" is more credible than one that quietly implies
-adoption.
+We report their low-probability call as-is and agree with it — see
+[§7](#7-conclusion).
 
 ---
 
@@ -517,17 +622,8 @@ adoption.
 | `issuance_model.py` | Issuance, burn fraction, yields, equilibrium solver → `model_output.txt` |
 | `staking_history.py` | Reconstructs staked ETH from on-chain flows → `staked_eth_reconstructed.csv` |
 | `yield_price_analysis.py` | Correlation tests → `correlation_output.txt` |
-| `regression_analysis.py` | OLS with HAC errors, Durbin-Watson, power → `regression_output.txt` |
-| `make_charts.py` | Renders all twelve charts → `charts/*.svg` |
-
-**Data files:** `staked_eth_reconstructed.csv` (monthly staked ETH, consensus APR,
-annualised issuance), `eth_supply_monthly.csv` (monthly burn and priority fees),
-`burn_history.csv` (annual burn), `eth_monthly.csv` and `btc_monthly.csv` (month-end
-closes from CoinGecko, used for every price test in §4).
-
-`regression_analysis.py` implements OLS, the Student-t tail via the incomplete beta
-function, Newey-West HAC standard errors and Durbin-Watson from scratch — no numpy or
-scipy, so the statistics reproduce on a bare Python 3 install.
+| `yield_price_regression.py` | OLS with t / p / R² / Durbin–Watson, plus the three §4c figures |
+| `make_charts.py` | Renders the other five charts → `charts/*.svg` |
 
 **Dune SQL** (paste at https://dune.com/queries):
 
@@ -598,9 +694,11 @@ figures cross-checked against press reporting of the 41.9M record and 2.78% APR.
 ### Gaps worth closing before publishing
 
 1. Aave WETH borrow APR — needed for the exact leverage-loop break-even (§5f).
+   This sets where the levered staking loop turns negative, the single most load-bearing
+   number in the bear case.
 2. Pendle's ETH-yield vs stablecoin-yield split at pool level (§5d).
 3. Staked-ETH ETF and treasury-company AUM, to size the yield-driven institutional bid
-   (§6.6, §7.7).
+   ([§6.7](#6-arguments-in-this-debate-that-dont-survive-scrutiny)).
 4. The validator-revenue fee-share conflict with Blockworks (§9) — needs the MEV-boost
    proposer-payment series to settle. Ours is a residual, theirs is per-proposer, and
    the two are ~3x apart.
